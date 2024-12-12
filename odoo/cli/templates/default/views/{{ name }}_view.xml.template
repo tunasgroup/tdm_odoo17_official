@@ -3,6 +3,17 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
+    <!-- tree view -->
+    <record id="{{ mod }}_view_tree" model="ir.ui.view">
+        <field name="name">tw.employee.tree</field>
+        <field name="model">hr.employee</field>
+        <field name="type">tree</field>
+        <field eval="10" name="priority"/>
+        <field name="arch" type="xml">
+            <tree string="">
+                <field name="name"/>
+            </tree></field>
+    </record>
 <!--
     <record model="ir.ui.view" id="{{mod}}.list">
       <field name="name">{{name}} list</field>
@@ -10,8 +21,6 @@
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
         </tree>
       </field>
     </record>

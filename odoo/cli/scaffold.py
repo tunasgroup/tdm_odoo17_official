@@ -25,6 +25,8 @@ class Scaffold(Command):
                  " path to a module template (default: %(default)s)")
         parser.add_argument('name', help="Name of the module to create")
         parser.add_argument(
+            '--inherit', default='', help="Name of the module to inherit from")
+        parser.add_argument(
             'dest', default='.', nargs='?',
             help="Directory to create the module in (default: %(default)s)")
 
@@ -40,6 +42,8 @@ class Scaffold(Command):
             }
         else:
             params = {'name': args.name}
+            if args.inherit:
+                params['inherit'] = args.inherit
 
         args.template.render_to(
             snake(args.name),
@@ -74,6 +78,13 @@ def pascal(s):
         ss.capitalize()
         for ss in re.sub(r'[_\s]+', ' ', s).split()
     )
+def mod(s):
+    s = re.sub(r'(?<=[^A-Z])\B([A-Z])', r' \1', s)
+    return '.'.join(s.lower().split('_'))
+
+def inherit(s):
+    s = re.sub(r'(?<=[^A-Z])\B([A-Z])', r' \1', s)
+    return '.'.join(s.lower().split('_'))
 
 def directory(p, create=False):
     expanded = os.path.abspath(
@@ -88,6 +99,7 @@ def directory(p, create=False):
 env = jinja2.Environment()
 env.filters['snake'] = snake
 env.filters['pascal'] = pascal
+env.filters['mod'] = mod
 class template(object):
     def __init__(self, identifier):
         # TODO: archives (zipfile, tarfile)
