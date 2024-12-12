@@ -1,0 +1,64 @@
+{%- set snake_name = name|snake -%}
+{%- set id = "access_%s_%s"|format(snake_name, snake_name) -%}
+{%- set name = "%s"|format(snake_name) -%}
+{%- set model_id = "model_%s_%s"|format(snake_name, snake_name) -%}
+
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    
+        <!-- READ -->
+        <record id="group_{{ name }}_read" model="res.groups">
+            <field name="category_id" ref="tw_menu.tw_role"/>
+            <field name="name">{{ name|pascal }} Read</field>
+        </record>
+
+        <record id="access_{{ name }}_read" model="ir.model.access">
+            <field name="model_id" ref="{{ model_id }}"/>
+            <field name="name">{{ name }} read</field>
+            <field name="group_id" ref="group_{{ name }}_read"/>
+            <field name="perm_read">1</field>
+        </record>
+            
+        <!-- UPDATE -->
+        <record id="group_{{ name }}_update" model="res.groups">
+            <field name="category_id" ref="tw_menu.tw_role"/>
+            <field name="name">{{ name|pascal }} Update</field>
+            <field name="implied_ids" eval="[(4, ref('group_{{ name }}_read'))]"/>
+        </record>
+
+        <record id="access_{{ name }}_update" model="ir.model.access">
+            <field name="model_id" ref="{{ model_id }}"/>
+            <field name="name">{{ name }} update</field>
+            <field name="group_id" ref="group_{{ name }}_update"/>
+            <field name="perm_create">1</field>
+            <field name="perm_write">1</field>
+        </record>
+
+        <!-- DELETE -->
+        <record id="group_{{ name }}_delete" model="res.groups">
+            <field name="category_id" ref="tw_menu.tw_role"/>
+            <field name="name">{{ name|pascal }} Delete</field>
+            <field name="implied_ids" eval="[(4, ref('group_{{ name }}_read'))]"/>
+        </record>
+
+        <record id="access_{{ name }}_delete" model="ir.model.access">
+            <field name="model_id" ref="{{ model_id }}"/>
+            <field name="name">{{ name }} delete</field>
+            <field name="group_id" ref="group_{{ name }}_delete"/>
+            <field name="perm_unlink">1</field>
+        </record>
+    
+    </data>
+
+    <data>
+        <record id="tw_menu.group_sys_admin" model="res.groups">
+            <field name="implied_ids" eval="[
+                (4, ref('group_{{ name }}_read')),
+                (4, ref('group_{{ name }}_update')),
+                (4, ref('group_{{ name }}_delete')),
+            ]"/>
+        </record>
+    </data>
+
+</odoo>

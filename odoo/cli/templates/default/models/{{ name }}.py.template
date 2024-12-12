@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+
+# 1: imports of python lib
+from datetime import datetime
+
+# 2: import of known third party lib
+
+# 3:  imports of odoo
+from odoo import models, fields, api, _
+
+# 4:  imports from odoo modules
+from odoo.exceptions import UserError
+
+# 5: local imports
+
+# 6: Import of unknown third party lib
+
+
+class {{ name|pascal }}(models.Model):
+    _name = "{{ name|mod }}"
+    _description = '{{ name|snake }}.{{ name|snake }}'
+
+    # 7: defaults methods
+    def get_default_datetime(self):
+        return datetime.now()
+
+    # 8: fields
+    name = fields.Char(string="Name")
+    date = fields.Date(string="Date",default=get_default_datetime)
+
+    # 9: relation fields
+
+    # 10: constraints & sql constraints
+    # TODO: Delete if the transaction does not require constraints or edit if adjustments are needed
+    _sql_constraints = [('name_uniq', 'unique(name)', 'Duplicate Name.')]
+
+    # 11: compute/depends & on change methods
+
+    # 12: override methods
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+        # * Some code in here ...
+
+        create = super({{ name|pascal }}, self).create(vals_list)
+        return create 
+
+    def write(self,vals):
+       
+        return super({{ name|pascal }}, self).write(vals)
+    
+    # TODO: Delete if the transaction requires delete
+    def unlink(self):
+        for record in self:
+            if record.state and record.state != 'draft':
+                raise UserError(_('Warning! \nCannot delete records with a state other than draft!'))
+            else:
+                raise UserError(_('Warning! \nCannot delete records!'))
+
+        return super({{ name|pascal }}, self).unlink()
+
+
+    # 13: action methods
+    
+    # * Example Action Methods 
+    # def action_name (name: confirm, approve, reject, etc...)
+    def action_name(self):
+
+        return True
+
+    # 14: private methods
+
+
