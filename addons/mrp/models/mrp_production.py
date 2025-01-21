@@ -867,7 +867,18 @@ class MrpProduction(models.Model):
                 if production.state == 'draft' and picking_type != production.picking_type_id:
                     production.name = picking_type.sequence_id.next_by_id()
 
-        res = super(MrpProduction, self).write(vals)
+        date_start_map = dict()
+        if 'date_start' in vals:
+            date_start_map = {
+                prod: vals['date_start'] - datetime.timedelta(days=prod.bom_id.produce_delay)
+                if prod.bom_id else vals['date_start']
+                for prod in self
+            }
+            res = True
+            for production in self:
+                res &= super(MrpProduction, production).write({**vals, 'date_start': date_start_map[production]})
+        else:
+            res = super().write(vals)
 
         for production in self:
             if 'date_start' in vals and not self.env.context.get('force_date', False):
@@ -892,7 +903,7 @@ class MrpProduction(models.Model):
                 if 'qty_producing' in vals:
                     finished_move.quantity = vals.get('qty_producing')
             if self._has_workorders() and not production.workorder_ids.operation_id and vals.get('date_start') and not vals.get('date_finished'):
-                new_date_start = fields.Datetime.to_datetime(vals.get('date_start'))
+                new_date_start = fields.Datetime.to_datetime(production.date_start)
                 if not production.date_finished or new_date_start >= production.date_finished:
                     production.date_finished = new_date_start + datetime.timedelta(hours=1)
         return res
@@ -1304,7 +1315,9 @@ class MrpProduction(models.Model):
         self.ensure_one()
         procurement_moves = self.procurement_group_id.stock_move_ids
         child_moves = procurement_moves.move_orig_ids
-        return (procurement_moves | child_moves).created_production_id.procurement_group_id.mrp_production_ids.filtered(lambda p: p.origin != self.origin) - self
+        return ((procurement_moves | child_moves).created_production_id.procurement_group_id.mrp_production_ids\
+                | child_moves.production_id)\
+                .filtered(lambda p: p.origin != self.origin) - self
 
     def _get_sources(self):
         self.ensure_one()

@@ -9,7 +9,7 @@
 # Martin Trigaux, 2024
 # Jolien De Paepe, 2024
 # Wil Odoo, 2024
-# Manon Rondou, 2024
+# Manon Rondou, 2025
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-02-26 12:42+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Manon Rondou, 2024\n"
+"Last-Translator: Manon Rondou, 2025\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2954,6 +2954,15 @@ msgstr ""
 "- Les listes de l'État régional\n"
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_tr_nilvera
+msgid ""
+"\n"
+"Base module containing core functionalities required by other Nilvera modules.\n"
+msgstr ""
+"\n"
+"Module de base contenant les fonctionnalités principales requises par les autres modules Nilvera.\n"
+
+#. module: base
 #: model:ir.module.module,description:base.module_l10n_bo_reports
 msgid ""
 "\n"
@@ -4938,6 +4947,15 @@ msgid ""
 msgstr ""
 "\n"
 "Filtre les lignes de stock hors du widget de réconciliation\n"
+
+#. module: base
+#: model:ir.module.module,description:base.module_l10n_tr_nilvera_einvoice
+msgid ""
+"\n"
+"For sending and receiving electronic invoices to Nilvera.\n"
+msgstr ""
+"\n"
+"Pour l'envoi et la réception de factures électroniques vers Nilvera.\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_fr_hr_payroll
@@ -9091,6 +9109,33 @@ msgstr ""
 "        Source : https://www.paragraf.rs/propisi/pravilnik-o-kontnom-okviru-sadrzini-racuna-za-privredna-drustva-zadruge.html\n"
 
 #. module: base
+#: model:ir.module.module,description:base.module_l10n_bh
+msgid ""
+"\n"
+"This is the base module to manage the accounting chart for Bahrain in Odoo.\n"
+"===========================================================================\n"
+"Bahrain accounting basic charts and localization.\n"
+"\n"
+"Activates:\n"
+" - Chart of Accounts\n"
+" - Taxes\n"
+" - Tax reports\n"
+" - Fiscal Positions\n"
+" - States\n"
+msgstr ""
+"\n"
+"Module de base pour gérer le plan comptable pour Bahreïn dans Odoo.\n"
+"===========================================================================\n"
+"Plans comptables de base et localisation pour Bahreïn.\n"
+"\n"
+"Active :\n"
+" - Plan Comptable\n"
+" - Taxes\n"
+" - Rapports Fiscaux\n"
+" - Positions Fiscales\n"
+" - États\n"
+
+#. module: base
 #: model:ir.module.module,description:base.module_l10n_be
 msgid ""
 "\n"
@@ -9239,6 +9284,14 @@ msgid ""
 "* Taxes\n"
 "* Fiscal Positions\n"
 msgstr ""
+"\n"
+"Module de base pour la gestion du plan comptable du Liban dans Odoo.\n"
+"==============================================================================\n"
+"Localisation et plan comptable du Liban.\n"
+"Active :\n"
+"* Le plan comptable\n"
+"* Les impôts\n"
+"* Les positions fiscales\n"
 
 #. module: base
 #: model:ir.module.module,description:base.module_l10n_lu
@@ -15985,6 +16038,11 @@ msgstr "ID badge"
 #: model:res.country,name:base.bs
 msgid "Bahamas"
 msgstr "Bahamas"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_bh
+msgid "Bahrain - Accounting"
+msgstr "Bahreïn - Comptabilité"
 
 #. module: base
 #: model:res.country,name:base.bh
@@ -25603,7 +25661,7 @@ msgstr "Liban"
 #. module: base
 #: model:ir.module.module,shortdesc:base.module_l10n_lb_account
 msgid "Lebanon - Accounting"
-msgstr ""
+msgstr "Liban - Comptabilité"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__report_paperformat__format__ledger
@@ -33229,7 +33287,7 @@ msgstr "Rapport"
 #. module: base
 #: model:ir.model,name:base.model_ir_actions_report
 msgid "Report Action"
-msgstr "Signaler l'action"
+msgstr "Action de rapport"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_actions_report__report_file
@@ -34110,8 +34168,7 @@ msgstr "Planifiez et gérez la maintenance des machines et des outils. "
 #: model:ir.module.module,summary:base.module_industry_fsm_sale
 msgid "Schedule and track onsite operations, invoice time and material"
 msgstr ""
-"Planifiez et suivez les interventions sur site, facturez le temps et le "
-"matériel"
+"Planifiez et suivez les services sur site, facturez le temps et le matériel"
 
 #. module: base
 #: model:ir.module.module,summary:base.module_industry_fsm
@@ -34680,7 +34737,7 @@ msgstr "Marges sur les services dans les commandes"
 #: model:res.partner.category,name:base.res_partner_category_11
 #: model_terms:ir.ui.view,arch_db:base.user_groups_view
 msgid "Services"
-msgstr "Interventions"
+msgstr "Services"
 
 #. module: base
 #: model:ir.model.fields,field_description:base.field_ir_profile__session
@@ -38375,6 +38432,16 @@ msgid "Türkiye - Accounting Reports"
 msgstr "Turquie - Rapports comptables"
 
 #. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_tr_nilvera
+msgid "Türkiye - Nilvera"
+msgstr "Turquie - Nilvera"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_l10n_tr_nilvera_einvoice
+msgid "Türkiye - Nilvera E-Invoice"
+msgstr "Turquie - Facture électronique Nilvera"
+
+#. module: base
 #: model:res.country,name:base.tm
 msgid "Turkmenistan"
 msgstr "Turkménistan"
@@ -41288,13 +41355,6 @@ msgstr "l10n_be_pos_sale"
 #: model:ir.model.fields.selection,name:base.selection__ir_model_fields__ttype__many2many
 msgid "many2many"
 msgstr "many2many"
-
-#. module: base
-#. odoo-python
-#: code:addons/base/models/ir_actions.py:0
-#, python-format
-msgid "many2many fields cannot be evaluated by reference"
-msgstr "les champs many2many ne peuvent pas être évalués par référence"
 
 #. module: base
 #: model:ir.model.fields.selection,name:base.selection__ir_model_fields__ttype__many2one

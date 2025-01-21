@@ -7,6 +7,7 @@
 # Vitalii Fedko, 2024
 # Larissa Manderfeld, 2024
 # Wil Odoo, 2024
+# Yana Bystrytska, 2024
 # Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2024
 # 
 msgid ""
@@ -3664,6 +3665,13 @@ msgstr "Неможливо створити документ про закупі
 #, python-format
 msgid "Cannot create a sale document in a non sale journal"
 msgstr "Неможливо створити документ про продаж у непродажному журналі"
+
+#. module: account
+#. odoo-python
+#: code:addons/account/wizard/accrued_orders.py:0
+#, python-format
+msgid "Cannot create an accrual entry with orders in different currencies."
+msgstr ""
 
 #. module: account
 #. odoo-python
@@ -14158,6 +14166,8 @@ msgid ""
 "The %s chart template shouldn't be selected directly. Instead, you should "
 "directly select the chart template related to your country."
 msgstr ""
+"Шаблон діаграми %s не потрібно обирати безпосередньо. Натомість вам слід "
+"вибрати шаблон діаграми, що стосується вашої країни."
 
 #. module: account
 #. odoo-python
@@ -16932,6 +16942,7 @@ msgstr ""
 #, python-format
 msgid "You can't create payments for entries belonging to different branches."
 msgstr ""
+"Ви не можете створювати платежі для записів, що належать до різних гілок."
 
 #. module: account
 #. odoo-python

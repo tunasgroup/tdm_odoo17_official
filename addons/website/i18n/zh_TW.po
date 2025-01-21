@@ -7,7 +7,7 @@
 # Martin Trigaux, 2024
 # Pak Wai Ho, 2024
 # Wil Odoo, 2024
-# Tony Ng, 2024
+# Tony Ng, 2025
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Tony Ng, 2024\n"
+"Last-Translator: Tony Ng, 2025\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -7513,7 +7513,7 @@ msgstr "地中海自助餐，包括前菜、主菜和甜品"
 #: model_terms:ir.ui.view,arch_db:website.s_rating_options
 #: model_terms:ir.ui.view,arch_db:website.snippet_options
 msgid "Medium"
-msgstr "中"
+msgstr "媒介"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_about_full_1_s_text_block_h2
@@ -8242,7 +8242,7 @@ msgstr "數字（整數）"
 #: model:ir.model.fields,field_description:website.field_res_config_settings__website_language_count
 #: model:ir.model.fields,field_description:website.field_website__language_count
 msgid "Number of languages"
-msgstr "語系數量"
+msgstr "語言數目"
 
 #. module: website
 #: model_terms:ir.ui.view,arch_db:website.snippets
@@ -9447,6 +9447,13 @@ msgstr "準備好開始聽覺探險嗎？今天就訂購 EchoTunes 無線耳機�
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_landing_s_features
 msgid "Rebranding"
 msgstr "品牌重塑"
+
+#. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_facebook_page/options.js:0
+#, python-format
+msgid "Recent Facebook Issues"
+msgstr "最近 Facebook 問題"
 
 #. module: website
 #. odoo-javascript
@@ -11352,6 +11359,15 @@ msgid "This URL is contained in the “%(field)s” of the following “%(model)
 msgstr "此網址是包含在以下模組的欄位「%(field)s」內。模組：%(model)s"
 
 #. module: website
+#. odoo-javascript
+#: code:addons/website/static/src/snippets/s_facebook_page/options.js:0
+#, python-format
+msgid ""
+"This block will temporarily not be shown on mobile due to recent Facebook "
+"issues."
+msgstr ""
+
+#. module: website
 #: model_terms:ir.ui.view,arch_db:website.new_page_template_services_0_s_three_columns
 msgid ""
 "This coaching program offers specialized strength-focused workouts, "
@@ -11520,6 +11536,7 @@ msgstr "此檢視架構已修改"
 #. module: website
 #. odoo-javascript
 #: code:addons/website/static/src/systray_items/website_switcher.xml:0
+#: code:addons/website/static/src/systray_items/website_switcher.js:0
 #, python-format
 msgid "This website does not have a domain configured."
 msgstr "此網站未設置網域名稱。"

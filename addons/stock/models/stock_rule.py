@@ -262,7 +262,7 @@ class StockRule(models.Model):
                 if float_compare(qty_needed, 0, precision_rounding=procurement.product_id.uom_id.rounding) <= 0:
                     procure_method = 'make_to_order'
                     for move in procurement.values.get('group_id', self.env['procurement.group']).stock_move_ids:
-                        if move.product_id != procurement.product_id:
+                        if move.product_id != procurement.product_id or move.state == 'cancel':
                             continue
                         elif move.rule_id == rule and float_compare(move.product_uom_qty, 0, precision_rounding=move.product_uom.rounding) > 0:
                             procure_method = move.procure_method
@@ -319,9 +319,7 @@ class StockRule(models.Model):
         # a new move with the correct qty
         qty_left = product_qty
 
-        move_dest_ids = []
-        if not self.location_dest_id.should_bypass_reservation():
-            move_dest_ids = values.get('move_dest_ids', False) and [(4, x.id) for x in values['move_dest_ids']] or []
+        move_dest_ids = values.get('move_dest_ids') and [(4, x.id) for x in values['move_dest_ids']] or []
 
         # when create chained moves for inter-warehouse transfers, set the warehouses as partners
         if not partner and move_dest_ids:

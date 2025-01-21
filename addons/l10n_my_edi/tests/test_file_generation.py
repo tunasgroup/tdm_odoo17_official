@@ -22,7 +22,7 @@ NS_MAP = {
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
-class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
+class L10nMyEDITestFileSubmission(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='my'):
@@ -38,6 +38,7 @@ class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
             'l10n_my_identification_number': '202001234567',
             'state_id': cls.env.ref('base.state_my_jhr').id,
             'street': 'that one street, 5',
+            'city': 'Main city',
             'phone': '+60123456789',
         })
         cls.partner_a.write({
@@ -47,7 +48,18 @@ class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
             'country_id': cls.env.ref('base.my').id,
             'state_id': cls.env.ref('base.state_my_jhr').id,
             'street': 'that other street, 3',
+            'city': 'Main city',
             'phone': '+60123456786',
+        })
+        cls.partner_b.write({
+            'vat': 'EI00000000020',
+            'l10n_my_identification_type': 'BRN',
+            'l10n_my_identification_number': 'NA',
+            'country_id': cls.env.ref('base.us').id,
+            'state_id': cls.env.ref('base.state_us_1'),
+            'street': 'that other street, 3',
+            'city': 'Main city',
+            'phone': '+60123456785',
         })
 
         cls.fakenow = datetime(2024, 7, 15, 10, 00, 00)
@@ -141,7 +153,7 @@ class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
         Simply ensure that in a multi currency environment, the rate is found in the file and is the expected one.
         """
         basic_invoice = self.init_invoice(
-            'out_invoice', amounts=[100], currency=self.currency_data['currency']
+            'out_invoice', amounts=[100], currency=self.currency_data['currency'], taxes=self.company_data['default_tax_sale']
         )
         basic_invoice.action_post()
 
@@ -159,6 +171,18 @@ class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
             root,
             'cac:TaxExchangeRate/cbc:TargetCurrencyCode',
             'MYR',
+        )
+        self._assert_node_values(
+            root,
+            'cac:TaxExchangeRate/cbc:SourceCurrencyCode',
+            'Gol',
+        )
+        # Check that the TaxAmount node has the correct currency too
+        self._assert_node_values(
+            root,
+            'cac:TaxTotal/cbc:TaxAmount',
+            text='10.000',
+            attributes={'currencyID': 'Gol'},
         )
 
     def test_03_optional_fields(self):
@@ -281,6 +305,34 @@ class L10nMyEDITestSubmission(AccountTestInvoicingCommon):
         # Check the invoice type to endure that it is marked as credit note.
         node = root.xpath('cac:OrderReference', namespaces=NS_MAP)
         self.assertEqual(node, [])
+
+    def test_06_foreigner(self):
+        """
+        Check that the file is correct with a foreign customer.
+        """
+        basic_invoice = self.init_invoice(
+            'out_invoice', amounts=[100], partner=self.partner_b
+        )
+        basic_invoice.action_post()
+
+        file, errors = basic_invoice._l10n_my_edi_generate_invoice_xml()
+        self.assertEqual(errors, set())
+        self.assertTrue(file)
+        # The file is working! Now we assert that the foreign customer information is in there.
+        root = etree.fromstring(file)
+        customer_root = root.xpath('cac:AccountingCustomerParty/cac:Party', namespaces=NS_MAP)[0]
+
+        # Party Identifications - TIN and BRN should be set.
+        self._assert_node_values(
+            customer_root,
+            'cac:PartyIdentification/cbc:ID[@schemeID="TIN"]',
+            self.partner_b.vat,
+        )
+        self._assert_node_values(
+            customer_root,
+            'cac:PartyIdentification/cbc:ID[@schemeID="BRN"]',
+            self.partner_b.l10n_my_identification_number,
+        )
 
     def _assert_node_values(self, root, node_path, text, attributes=None):
         node = root.xpath(node_path, namespaces=NS_MAP)
