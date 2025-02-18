@@ -74,7 +74,7 @@ def resolve_mro(model, name, predicate):
         classes are ignored.
     """
     result = []
-    for cls in model._model_classes:
+    for cls in model._model_classes__:
         value = cls.__dict__.get(name, Default)
         if value is Default:
             continue
@@ -1870,6 +1870,8 @@ class _String(Field):
                         if old_is_text or not closest_is_text:
                             if not closest_is_text and records.env.context.get("install_mode") and lang == 'en_US' and term_adapter:
                                 adapter = term_adapter(closest_term)
+                                if adapter(old_term) is None:  # old term and closest_term have different structures
+                                    continue
                                 translation_dictionary[closest_term] = {k: adapter(v) for k, v in translation_dictionary.pop(old_term).items()}
                             else:
                                 translation_dictionary[closest_term] = translation_dictionary.pop(old_term)

@@ -8,8 +8,8 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2024
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2024
 # Damian Ratus, 2024
-# Wil Odoo, 2024
 # Marta Wacławek, 2025
+# Wil Odoo, 2025
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-13 10:26+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Marta Wacławek, 2025\n"
+"Last-Translator: Wil Odoo, 2025\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -153,7 +153,7 @@ msgstr "%s (kopiuj)"
 #: code:addons/stock/models/stock_move.py:0
 #, python-format
 msgid "%s --> Product UoM is %s (%s) - Move UoM is %s (%s)"
-msgstr ""
+msgstr "%s --> JM produktu to %s (%s) - JM ruchu to %s (%s)"
 
 #. module: stock
 #. odoo-python
@@ -390,11 +390,6 @@ msgstr "4 x 7 z ceną"
 #: model_terms:ir.ui.view,arch_db:stock.report_package_barcode
 msgid "54326786758"
 msgstr "54326786758"
-
-#. module: stock
-#: model_terms:ir.ui.view,arch_db:stock.report_inventory
-msgid "98"
-msgstr "98"
 
 #. module: stock
 #. odoo-python
@@ -4044,13 +4039,6 @@ msgid "Immediate Transfer"
 msgstr "Natychmiastowe pobranie"
 
 #. module: stock
-#. odoo-python
-#: code:addons/stock/models/stock_quant.py:0
-#, python-format
-msgid "Import"
-msgstr "Importuj"
-
-#. module: stock
 #. odoo-javascript
 #: code:addons/stock/static/src/widgets/generate_serial.js:0
 #, python-format
@@ -6457,11 +6445,9 @@ msgstr "Obecność zależy od typu operacji."
 #: code:addons/stock/models/stock_quant.py:0
 #, python-format
 msgid ""
-"Press the CREATE button to define quantity for each product in your stock or"
-" import them from a spreadsheet throughout Favorites"
+"Press the \"New\" button to define the quantity for a product in your stock "
+"or import quantities from a spreadsheet via the Actions menu"
 msgstr ""
-"Naciśnij przycisk UTWÓRZ, aby zdefiniować ilości dla każdego produktu w "
-"magazynie lub zaimportuj ilość z arkusza kalkulacyjnego przez Ulubione "
 
 #. module: stock
 #. odoo-javascript
@@ -6510,7 +6496,7 @@ msgstr "Wydrukuj etykietę jako:"
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
 msgid "Print on \"Put in Pack\""
-msgstr ""
+msgstr "Wydrukuj na \"Umieść w paczce\""
 
 #. module: stock
 #: model_terms:ir.ui.view,arch_db:stock.view_picking_type_form
@@ -7821,7 +7807,7 @@ msgstr ""
 #: code:addons/stock/models/stock_rule.py:0
 #, python-format
 msgid "Rule %s belongs to %s while the route belongs to %s."
-msgstr ""
+msgstr "Regułą %s przynależy do %s podczas gdy trasa przynależy do %s."
 
 #. module: stock
 #: model:ir.model.fields,field_description:stock.field_stock_rule__rule_message
@@ -9092,6 +9078,8 @@ msgid ""
 "The quantities selected do not all belong to the same location.\n"
 "                    You may not assign them a package without moving them to a common location."
 msgstr ""
+"Wybrane ilości nie należą do tej samej lokalizacji.\n"
+"                    Nie możesz przypisać im opakowania bez przemieszczania ich do wspólnej lokalizacji."
 
 #. module: stock
 #. odoo-python
@@ -9207,6 +9195,8 @@ msgid ""
 "There is nothing eligible to put in a pack. Either there are no quantities "
 "to put in a pack or all products are already in a pack."
 msgstr ""
+"Nie ma nic kwalifikującego się do umieszczenia w paczce. Albo nie ma ilości "
+"do umieszczenia w paczce, albo wszystkie produkty są już w paczce."
 
 #. module: stock
 #: model_terms:ir.actions.act_window,help:stock.stock_move_line_action
@@ -9248,6 +9238,8 @@ msgid ""
 "This checkbox is just indicative, it doesn't validate or generate any "
 "product moves."
 msgstr ""
+"To pole wyboru ma charakter wyłącznie orientacyjny, nie zatwierdza ani nie "
+"generuje żadnych ruchów produktowych."
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_rule__name
@@ -9301,6 +9293,10 @@ msgid ""
 "quantity does not generate a backorder.Changing this quantity on assigned "
 "moves affects the product reservation, and should be done with care."
 msgstr ""
+"Jest to ilość produktu, która jest planowana do przemieszczenia. Obniżenie "
+"tej ilości nie generuje oczekującego zamówienia. Zmiana tej ilości w "
+"przypisanych ruchach wpływa na rezerwację produktu i powinna być wykonana "
+"ostrożnie."
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_stock_location__child_internal_location_ids
@@ -9459,6 +9455,10 @@ msgid ""
 "reference values or assign the existing reference sequence to this operation"
 " type."
 msgstr ""
+"Ten prefiks sekwencji jest już używany przez inny typ operacji. Zaleca się "
+"wybranie unikalnego prefiksu, aby uniknąć problemów i/lub powtórzonych "
+"wartości referencyjnych, lub przypisanie istniejącej sekwencji referencyjnej"
+" do tego typu operacji."
 
 #. module: stock
 #: model:ir.model.fields,help:stock.field_product_product__property_stock_production

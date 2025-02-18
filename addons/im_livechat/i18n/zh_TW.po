@@ -1152,7 +1152,7 @@ msgstr "實時聊天語言"
 #. module: im_livechat
 #: model:ir.model.fields,help:im_livechat.field_discuss_channel__livechat_active
 msgid "Livechat session is active until visitor leaves the conversation."
-msgstr "實時聊天對話時段處於活動狀態，直至訪問者離開對話。"
+msgstr "實時聊天對話時段會一直生效，直至訪客離開對話。"
 
 #. module: im_livechat
 #: model:ir.model.fields,field_description:im_livechat.field_im_livechat_channel_rule__sequence
@@ -1329,7 +1329,7 @@ msgstr "客服人員"
 msgid ""
 "Operators that do not show any activity In Odoo for more than 30 minutes "
 "will be considered as disconnected."
-msgstr "在 Odoo 中未顯示任何活動超過 30 分鐘的操作人員將被視為已斷開連接。"
+msgstr "操作員若超過 30 分鐘未有在 Odoo 內顯示任何活動，將被視為已斷線。"
 
 #. module: im_livechat
 #: model_terms:ir.ui.view,arch_db:im_livechat.chatbot_script_answer_view_tree

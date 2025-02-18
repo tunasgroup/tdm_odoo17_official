@@ -7,7 +7,7 @@ from datetime import timedelta
 from operator import itemgetter
 from re import findall as regex_findall
 
-from odoo import _, api, Command, fields, models
+from odoo import SUPERUSER_ID, _, api, Command, fields, models
 from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.osv.expression import OR
@@ -363,6 +363,8 @@ class StockMove(models.Model):
             # Since the move lines might have been created in a certain order to respect
             # a removal strategy, they need to be unreserved in the opposite order
             for ml in reversed(move.move_line_ids.sorted('id')):
+                if self.env.context.get('unreserve_unpicked_only') and ml.picked:
+                    continue
                 if float_is_zero(quantity, precision_rounding=move.product_uom.rounding):
                     break
                 qty_ml_dec = min(ml.quantity, ml.product_uom_id._compute_quantity(quantity, ml.product_uom_id, round=False))
@@ -1917,7 +1919,7 @@ Please change the quantity done or the rounding precision of your unit of measur
         for result_package in moves_todo\
                 .move_line_ids.filtered(lambda ml: ml.picked).mapped('result_package_id')\
                 .filtered(lambda p: p.quant_ids and len(p.quant_ids) > 1):
-            if len(result_package.quant_ids.filtered(lambda q: not float_is_zero(abs(q.quantity) + abs(q.reserved_quantity), precision_rounding=q.product_uom_id.rounding)).mapped('location_id')) > 1:
+            if len(result_package.quant_ids.filtered(lambda q: float_compare(q.quantity, 0.0, precision_rounding=q.product_uom_id.rounding) > 0).mapped('location_id')) > 1:
                 raise UserError(_('You cannot move the same package content more than once in the same transfer or split the same package into two location.'))
         if any(ml.package_id and ml.package_id == ml.result_package_id for ml in moves_todo.move_line_ids):
             self.env['stock.quant']._unlink_zero_quants()
@@ -2018,6 +2020,8 @@ Please change the quantity done or the rounding precision of your unit of measur
         return new_move_vals
 
     def _recompute_state(self):
+        if self._context.get('preserve_state'):
+            return
         moves_state_to_write = defaultdict(set)
         for move in self:
             rounding = move.product_uom.rounding
@@ -2044,7 +2048,7 @@ Please change the quantity done or the rounding precision of your unit of measur
 
     def _get_lang(self):
         """Determine language to use for translated description"""
-        return self.picking_id.partner_id.lang or self.partner_id.lang or self.env.user.lang
+        return self.picking_id.partner_id.lang or self.partner_id.lang or (self.env.user.id != SUPERUSER_ID and self.env.user.lang) or self.env.context.get('lang') or self.env['res.users'].browse(SUPERUSER_ID).lang
 
     def _get_source_document(self):
         """ Return the move's document, used by `stock.forecasted_product_productt`

@@ -18,23 +18,25 @@
 # KeyVillage, 2024
 # Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2024
 # Martin Trigaux, 2024
-# Maria Boyadjieva <marabo2000@gmail.com>, 2024
 # aleksandar ivanov, 2024
-# Rumena Georgieva <rumena.georgieva@gmail.com>, 2024
 # Meglen Hadzhitsanchev, 2024
 # Elena Varbanova, 2024
 # Venelin Stoykov, 2024
-# Veselina Slavkova, 2024
-# Milena Georgieva, 2024
-# Petko Karamotchev, 2024
+# Veselina Slavkova, 2025
+# Martin Dinovski, 2025
+# Petko Karamotchev, 2025
+# Maria Boyadjieva <marabo2000@gmail.com>, 2025
+# Margarita Katzeva, 2025
+# Rumena Georgieva <rumena.georgieva@gmail.com>, 2025
+# Milena Georgieva, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-13 10:26+0000\n"
+"POT-Creation-Date: 2025-02-10 10:33+0000\n"
 "PO-Revision-Date: 2023-10-26 23:09+0000\n"
-"Last-Translator: Petko Karamotchev, 2024\n"
+"Last-Translator: Milena Georgieva, 2025\n"
 "Language-Team: Bulgarian (https://app.transifex.com/odoo/teams/41243/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -104,6 +106,13 @@ msgid "%(pos_name)s (not used)"
 msgstr ""
 
 #. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/receipt_header/receipt_header.js:0
+#, python-format
+msgid "%(vatLabel)s: %(vatId)s"
+msgstr "%(vatLabel)s: %(vatId)s"
+
+#. module: point_of_sale
 #. odoo-python
 #: code:addons/point_of_sale/models/pos_session.py:0
 #, python-format
@@ -152,7 +161,7 @@ msgstr ""
 #: code:addons/point_of_sale/models/pos_session.py:0
 #, python-format
 msgid "%s with %s"
-msgstr ""
+msgstr "%s с %s"
 
 #. module: point_of_sale
 #. odoo-python
@@ -2512,6 +2521,7 @@ msgstr "Показване на поръчките на дисплея за по
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Нямате достъп, пропуснете тези данни за електронната поща на потребителя"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -3249,7 +3259,7 @@ msgstr "Искане за фактура"
 #: code:addons/point_of_sale/models/pos_payment.py:0
 #, python-format
 msgid "Invoice payment for %s (%s) using %s"
-msgstr ""
+msgstr "Плащане на фактура за %s (%s) с използване на %s"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -3665,7 +3675,7 @@ msgstr ""
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.report_userlabel
 msgid "Marc Demo"
-msgstr ""
+msgstr "Марк Демо"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__margin
@@ -3893,6 +3903,11 @@ msgid "Newspaper Rack"
 msgstr ""
 
 #. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Следващото събитие от календара на дейностите"
+
+#. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_session__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Краен срок на следващо действие"
@@ -3967,7 +3982,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_report_pos_order_all
 #: model_terms:ir.actions.act_window,help:point_of_sale.action_report_pos_order_all_filtered
 msgid "No data yet!"
-msgstr ""
+msgstr "Все още няма данни!"
 
 #. module: point_of_sale
 #. odoo-python
@@ -4911,7 +4926,7 @@ msgstr "Моля, определете сметка за прихода на т�
 #: code:addons/point_of_sale/models/pos_order.py:0
 #, python-format
 msgid "Please define income account for this product: '%s' (id:%d)."
-msgstr ""
+msgstr "Моля, дефинирайте приходна сметка за този продукт: '%s' (id:%d)."
 
 #. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.ticket_validation_screen
@@ -5716,6 +5731,11 @@ msgstr ""
 #, python-format
 msgid "REFUNDED:"
 msgstr ""
+
+#. module: point_of_sale
+#: model:ir.model.fields,field_description:point_of_sale.field_pos_session__rating_ids
+msgid "Ratings"
+msgstr "Оценявания"
 
 #. module: point_of_sale
 #. odoo-javascript
@@ -6892,6 +6912,13 @@ msgid "Tax ID"
 msgstr "Данъчен ИН "
 
 #. module: point_of_sale
+#. odoo-javascript
+#: code:addons/point_of_sale/static/src/app/screens/receipt_screen/receipt/receipt_header/receipt_header.js:0
+#, python-format
+msgid "Tax ID: %(vatId)s"
+msgstr ""
+
+#. module: point_of_sale
 #: model_terms:ir.ui.view,arch_db:point_of_sale.report_saledetails
 msgid "Tax Name"
 msgstr "Име на данък"
@@ -7622,7 +7649,7 @@ msgstr "Съвет"
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_order__tip_amount
 msgid "Tip Amount"
-msgstr ""
+msgstr "Стойност на бакшиш:"
 
 #. module: point_of_sale
 #: model:ir.model.fields,field_description:point_of_sale.field_pos_config__tip_product_id
@@ -8508,7 +8535,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/app/screens/product_screen/product_screen.xml:0
 #, python-format
 msgid "items"
-msgstr ""
+msgstr "предмети "
 
 #. module: point_of_sale
 #: model:mail.activity.type,summary:point_of_sale.mail_activity_old_session

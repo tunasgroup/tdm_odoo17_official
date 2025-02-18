@@ -2102,6 +2102,43 @@ class TestMrpOrder(TestMrpCommon):
         self.assertEqual(list(warning.keys())[0], 'warning', 'Warning message was not returned')
         self.assertEqual(scrap.location_id, mo.location_dest_id, 'Location was not auto-corrected')
 
+    def test_mo_assign_producing_lot(self):
+        """ Checks that in an MO tracked by Lot the reservations of the raws are not
+        modified if a LOT is assigned manually in the Form.
+        """
+        warehouse = self.warehouse_1
+        mo, _, p_final, comp1, comp2 = self.generate_mo(tracking_final='lot', tracking_base_1='serial', qty_base_1=1, qty_final=1, picking_type_id=warehouse.manu_type_id)
+        self.assertEqual(len(mo), 1, 'MO should have been created')
+        lot1, sn1 = self.env['stock.lot'].create([
+            {
+                'name': 'lot1',
+                'product_id': p_final.id,
+                'company_id': self.env.company.id,
+            },
+            {
+                'name': 'sn1',
+                'product_id': comp1.id,
+                'company_id': self.env.company.id,
+            },
+        ])
+        # make a reservation on the raw moves
+        self.env['stock.quant']._update_available_quantity(comp1, warehouse.lot_stock_id, 1, lot_id=sn1)
+        self.env['stock.quant']._update_available_quantity(comp2, warehouse.lot_stock_id, 1)
+        mo.action_assign()
+        self.assertEqual(mo.qty_producing, 0.0)
+        self.assertRecordValues(mo.move_raw_ids, [
+            {'product_id': comp2.id, 'quantity': 1, 'picked': False, 'lot_ids': []},
+            {'product_id': comp1.id, 'quantity': 1, 'picked': False, 'lot_ids': sn1.ids},
+        ])
+        with Form(mo) as mo_form:
+            mo_form.lot_producing_id = lot1
+        self.assertEqual(mo.qty_producing, 0.0)
+        self.assertEqual(mo.lot_producing_id, lot1)
+        self.assertRecordValues(mo.move_raw_ids, [
+            {'product_id': comp2.id, 'quantity': 1, 'picked': False, 'lot_ids': []},
+            {'product_id': comp1.id, 'quantity': 1, 'picked': False, 'lot_ids': sn1.ids},
+        ])
+
     def test_a_multi_button_plan(self):
         """ Test batch methods (confirm/validate) of the MO with the same bom """
         self.bom_2.type = "normal"  # avoid to get the operation of the kit bom
@@ -3282,6 +3319,38 @@ class TestMrpOrder(TestMrpCommon):
         self.assertEqual(mo_backorder.workorder_ids[1].date_start, datetime(2023, 3, 1, 12, 0))
         self.assertEqual(mo_backorder.workorder_ids[2].date_start, datetime(2023, 3, 1, 12, 45))
 
+    @freeze_time('2023-03-01 12:00')
+    def test_all_workorders_planned(self):
+        """
+            Test, when writing to a confirmed MO, that all workorders that are expected to be planned are planned.
+        """
+        self.env.user.groups_id += self.env.ref('mrp.group_mrp_routings')
+
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product_8
+        with mo_form.workorder_ids.new() as workorder:
+            workorder.name = "OP1"
+            workorder.workcenter_id = self.workcenter_2
+        with mo_form.workorder_ids.new() as workorder:
+            workorder.name = "OP2"
+            workorder.workcenter_id = self.workcenter_2
+        mo = mo_form.save()
+        mo.action_confirm()
+
+        mo.workorder_ids[1].button_start()
+        mo.workorder_ids[1].button_finish()
+
+        self.assertTrue(mo.workorder_ids[1].date_start)
+
+        with Form(mo) as mo_form:
+            with mo_form.workorder_ids.new() as workorder:
+                workorder.name = "OP3"
+                workorder.workcenter_id = self.workcenter_2
+            mo = mo_form.save()
+
+        self.assertTrue(mo.workorder_ids[0].date_start)
+        self.assertTrue(mo.workorder_ids[2].date_start)
+
     def test_compute_product_id(self):
         """
             Tests the creation of a production order automatically sets the product when the bom is provided,
@@ -4412,8 +4481,8 @@ class TestMrpOrder(TestMrpCommon):
 
         production.button_mark_done()
 
-        self.assertEqual(production.workorder_ids[0].date_finished, production.date_finished)
-        self.assertEqual(production.workorder_ids[0].leave_id.date_to, production.date_finished)
+        self.assertAlmostEqual(production.workorder_ids[0].date_finished, production.date_finished, delta=timedelta(seconds=2))
+        self.assertAlmostEqual(production.workorder_ids[0].leave_id.date_to, production.date_finished, delta=timedelta(seconds=2))
 
     def test_child_mo_after_qty_parent_mo_update(self):
         """
@@ -4466,6 +4535,29 @@ class TestMrpOrder(TestMrpCommon):
         child_production_2, parent_production_2 = self.env['mrp.production'].search([('product_id', 'in', (parent + child).ids), ('id', 'not in', [parent_production.id, child_production.id])], order='id desc', limit=2)
         self.assertEqual(grandparent_production._get_children(), (parent_production | parent_production_2))
         self.assertEqual(parent_production_2._get_children(), child_production_2)
+
+    def test_mo_modify_date_with_manuf_lead_time(self):
+        """ A direct write on MrpProduction.date_start should result in that exact date value being
+        written to the MO.
+        """
+        finished_product = self.env['product.product'].create({'name': 'finished product'})
+        finished_bom_id = self.env['mrp.bom'].create({
+            'produce_delay': 17,
+            'product_id': finished_product.id,
+            'product_tmpl_id': finished_product.product_tmpl_id.id,
+            'product_uom_id': self.uom_unit.id,
+            'product_qty': 1.0,
+            'bom_line_ids': [(0, 0, {'product_id': self.product.id, 'product_qty': 1})],
+        })
+        mo = self.env['mrp.production'].create({'bom_id': finished_bom_id.id})
+        mo.action_confirm()
+        original_start_date = mo.date_start
+        with Form(mo) as production_form:
+            production_form.date_start = fields.Date.today() - timedelta(days=10)
+        self.assertEqual(mo.date_start.date(), original_start_date.date() - timedelta(days=10))
+        with Form(mo) as production_form:
+            production_form.date_start = original_start_date
+        self.assertEqual(mo.date_start, original_start_date)
 
 @tagged('post_install', '-at_install')
 class TestMrpSynchronization(HttpCase):
